@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Messenger.Data.Migrations
 {
-    [DbContext(typeof(MessangerContext))]
+    [DbContext(typeof(MessengerContext))]
     [Migration("20231214201133_Initial")]
     partial class Initial
     {

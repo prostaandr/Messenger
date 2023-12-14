@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Messenger.Data.Migrations
 {
-    [DbContext(typeof(MessangerContext))]
+    [DbContext(typeof(MessengerContext))]
     partial class MessangerContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

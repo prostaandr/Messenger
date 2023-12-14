@@ -21,6 +21,11 @@ namespace Messenger.Data
 
         }
 
+        public MessangerContext(DbContextOptions options) : base(options)
+        {
+
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Messenger;Trusted_Connection=True;");
