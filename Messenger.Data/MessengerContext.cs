@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Messenger.Data
 {
-    public class MessangerContext : DbContext
+    public class MessengerContext : DbContext
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Message> Messages { get; set; }
@@ -16,12 +16,12 @@ namespace Messenger.Data
         public DbSet<Group> Groups { get; set; }
         public DbSet<GroupMessage> GroupMessages { get; set; }
 
-        public MessangerContext()
+        public MessengerContext()
         {
 
         }
 
-        public MessangerContext(DbContextOptions options) : base(options)
+        public MessengerContext(DbContextOptions options) : base(options)
         {
 
         }
