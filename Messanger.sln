@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33627.172
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messenger.Server", "Messenger\Messenger.Server.csproj", "{57333A46-7E37-4181-AE4F-4437B56B7EBC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Messenger.Server", "Messenger\Messenger.Server.csproj", "{57333A46-7E37-4181-AE4F-4437B56B7EBC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messenger.Client.WPF", "Messenger.Client.WPF\Messenger.Client.WPF.csproj", "{9B912DC7-D85E-4568-B8DA-7A1204008378}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Messenger.Client.WPF", "Messenger.Client.WPF\Messenger.Client.WPF.csproj", "{9B912DC7-D85E-4568-B8DA-7A1204008378}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messenger.Data", "Messenger.Data\Messenger.Data.csproj", "{414C6A98-1BB8-463C-B852-0BF5B4E54B0B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Messenger.Data", "Messenger.Data\Messenger.Data.csproj", "{414C6A98-1BB8-463C-B852-0BF5B4E54B0B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messenger.Domain", "Messenger.Domain\Messenger.Domain.csproj", "{82D30D3E-3705-4383-817C-91B9DF674E4A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Messenger.Domain", "Messenger.Domain\Messenger.Domain.csproj", "{82D30D3E-3705-4383-817C-91B9DF674E4A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messenger.Services", "Messenger.Services\Messenger.Services.csproj", "{C43C3B45-753A-4E91-AB97-25F7E3057B81}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Messenger.Services", "Messenger.Services\Messenger.Services.csproj", "{C43C3B45-753A-4E91-AB97-25F7E3057B81}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
