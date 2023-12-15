@@ -11,9 +11,13 @@
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.14" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Common" Version="7.0.14" />
     <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="7.0.14" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.5.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.5.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Messenger.Controllers\Messenger.Controllers.csproj" />
     <ProjectReference Include="..\Messenger.Data\Messenger.Data.csproj" />
     <ProjectReference Include="..\Messenger.Services\Messenger.Services.csproj" />
   </ItemGroup>

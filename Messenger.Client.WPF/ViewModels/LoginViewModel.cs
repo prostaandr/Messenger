@@ -2,11 +2,14 @@
 using Messenger.Services;
 using Messenger.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -58,8 +61,17 @@ namespace Messenger.Client.WPF.ViewModels
         {
             try
             {
-                //var loginUser = await _accountService.Login(Login, Password);
-                //AccountService.CurrentUser = loginUser;
+                using (var client = new HttpClient())
+                {
+                    var data = new Dictionary<string, string>();
+                    data.Add("login", Login);
+                    data.Add("password", Password);
+                    var content = new StringContent(JsonConvert.SerializeObject(data), UnicodeEncoding.UTF8, "application/json");
+                    var response = await client.PostAsync("https://localhost:7076/Account/Login", content);
+                    
+                    if (response.IsSuccessStatusCode) MessageBox.Show("Да");
+                    else MessageBox.Show("No");
+                }
 
                 currentWindow.Hide();
                 //var mainWindow = new MainWindow();
