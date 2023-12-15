@@ -19,7 +19,7 @@ builder.Services.AddDbContext<MessengerContext>(options =>
     options.UseSqlServer(connectionString);
 }, ServiceLifetime.Transient);
 
-//builder.Services.AddIdentity<User, IdentityRole>().AddUserStore<MessengerContext>();
+//builder.Services.AddIdentity<User, IdentityRole>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSignalR();
 builder.Services.AddControllers();
@@ -54,26 +54,6 @@ var app = builder.Build();
 
 app.UseAuthentication();
 app.UseAuthorization();
-//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-//    .AddJwtBearer(options =>
-//    {
-//        options.Events = new JwtBearerEvents
-//        {
-//            OnMessageReceived = context =>
-//            {
-//                var accessToken = context.Request.Query["access_token"];
-
-//                // если запрос направлен хабу
-//                var path = context.HttpContext.Request.Path;
-//                if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/chat"))
-//                {
-//                    // получаем токен из строки запроса
-//                    context.Token = accessToken;
-//                }
-//                return Task.CompletedTask;
-//            }
-//        };
-//    });
 
 app.MapControllers();
 app.UseStaticFiles();

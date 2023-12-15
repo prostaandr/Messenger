@@ -50,7 +50,7 @@
                 <TextBox Style="{StaticResource textElementBlockTextBox}" Text="{Binding User.Login}"></TextBox>
                 <TextBlock Text="{Binding LoginErrors}" Style="{StaticResource errorsBlock}"></TextBlock>
             </StackPanel>
-            <StackPanel Style="{StaticResource textElementBlock}" Visibility="Collapsed">
+            <StackPanel Style="{StaticResource textElementBlock}" >
                 <TextBlock Text="Электронная почта" Margin="0 0 0 5"></TextBlock>
                 <TextBox Style="{StaticResource textElementBlockTextBox}" Text="{Binding User.Email}"></TextBox>
                     <TextBlock Text="{Binding EmailErrors}" Style="{StaticResource errorsBlock}"></TextBlock>

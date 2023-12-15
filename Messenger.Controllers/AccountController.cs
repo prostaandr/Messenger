@@ -6,6 +6,9 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Messenger.Dto;
+using Messenger.Domain;
+using Messenger.Services;
 
 namespace Messenger.Controllers
 {
@@ -22,14 +25,23 @@ namespace Messenger.Controllers
 
         // POST: Account/Login
         [HttpPost("Login")]
-        public IActionResult Login (string login, string password)
+        public async Task<IActionResult> Login (LoginRequest request)
         {
-            var user = _accountService.Login(login, password);
-            if (user != null)
+            var user = await _accountService.Login(request.Login, request.Password);
+            if (user == null)
             {
-                return Ok("1");
+                return BadRequest();
             }
-            return Ok("2");
+
+            AccountService.CurrentUser = user;
+            return Ok(user.Token);
+        }
+
+        // POST: Account/Registration
+        [HttpPost("Registration")]
+        public async Task Registration(User user)
+        {
+            await _accountService.Registration(user);
         }
 
     }

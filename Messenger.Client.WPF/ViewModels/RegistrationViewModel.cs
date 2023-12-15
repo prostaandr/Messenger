@@ -2,11 +2,14 @@
 using Messenger.Client.WPF.Helpers;
 using Messenger.Client.WPF.Views;
 using Messenger.Domain;
+using Messenger.Dto;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net.Http;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
@@ -52,17 +55,17 @@ namespace Messenger.Client.WPF.ViewModels
             }
         }
 
-        //private string _emailErrors;
-        //public string EmailErrors
-        //{
-        //    get => _emailErrors;
-        //    set
-        //    {
-        //        if (value == _emailErrors) return;
-        //        _emailErrors = value;
-        //        OnPropertyChanged();
-        //    }
-        //}
+        private string _emailErrors;
+        public string EmailErrors
+        {
+            get => _emailErrors;
+            set
+            {
+                if (value == _emailErrors) return;
+                _emailErrors = value;
+                OnPropertyChanged();
+            }
+        }
 
         private string _passwordErrors;
         public string PasswordErrors
@@ -76,14 +79,14 @@ namespace Messenger.Client.WPF.ViewModels
             }
         }
 
-        private string _nickName;
+        private string _nickNameErrors;
         public string NickNameErrors
         {
-            get => _nickName;
+            get => _nickNameErrors;
             set
             {
-                if (value == _nickName) return;
-                _nickName = value;
+                if (value == _nickNameErrors) return;
+                _nickNameErrors = value;
                 OnPropertyChanged();
             }
         }
@@ -99,7 +102,7 @@ namespace Messenger.Client.WPF.ViewModels
                       var values = (object[])obj;
 
                       LoginErrors = String.Join("\n", User.Login.Rules().NotEmpty().MinCharacters(5).MaxCharacters(30).Validate());
-                      //EmailErrors = String.Join("\n", User.Email.Rules().NotEmpty().Validate());
+                      EmailErrors = String.Join("\n", User.Email.Rules().NotEmpty().Validate());
                       PasswordErrors = String.Join("\n", User.Password.Rules().NotEmpty().MinCharacters(6).Compliance(RepeatePassword, "Подтверждение пароля").Validate());
                       NickNameErrors = String.Join("\n", User.Nickname.Rules().NotEmpty().MinCharacters(5).MaxCharacters(20).Validate());
 
@@ -115,7 +118,19 @@ namespace Messenger.Client.WPF.ViewModels
 
         private async void AddUserAsync()
         {
-            //await _accountService.Registration(User);
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    var content = new StringContent(JsonConvert.SerializeObject(User), Encoding.UTF8, "application/json");
+                    var response = await client.PostAsync("https://localhost:7076/Account/Registration", content);
+                    response.EnsureSuccessStatusCode();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Неудачная попытка регистрации: " + ex.Message);
+            }
         }
 
         private RelayCommand _closingCommand;

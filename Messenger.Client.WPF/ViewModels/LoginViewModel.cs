@@ -1,4 +1,5 @@
 ﻿using Messenger.Client.WPF.Commands;
+using Messenger.Dto;
 using Messenger.Services;
 using Messenger.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
@@ -63,14 +64,10 @@ namespace Messenger.Client.WPF.ViewModels
             {
                 using (var client = new HttpClient())
                 {
-                    var data = new Dictionary<string, string>();
-                    data.Add("login", Login);
-                    data.Add("password", Password);
-                    var content = new StringContent(JsonConvert.SerializeObject(data), UnicodeEncoding.UTF8, "application/json");
+                    var requst = new LoginRequest() { Login = Login, Password = Password};
+                    var content = new StringContent(JsonConvert.SerializeObject(requst), Encoding.UTF8, "application/json");
                     var response = await client.PostAsync("https://localhost:7076/Account/Login", content);
-                    
-                    if (response.IsSuccessStatusCode) MessageBox.Show("Да");
-                    else MessageBox.Show("No");
+                    response.EnsureSuccessStatusCode();
                 }
 
                 currentWindow.Hide();
@@ -79,7 +76,7 @@ namespace Messenger.Client.WPF.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Неудачная попытка входа: " + ex.Message);
             }
         }
 
