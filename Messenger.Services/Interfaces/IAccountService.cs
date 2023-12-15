@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Messenger.Services.Interfaces
 {
-    public interface IUserService
+    public interface IAccountService
     {
-        Task<UserDto> Login(int userId);
+        Task<UserDto> Login(string login, string password);
         Task Registration(User user);
     }
 }

@@ -10,6 +10,7 @@ namespace Messenger.Data.Interfaces
     public interface IUserRepository
     {
         Task<User> Get(int id);
+        Task<User> Get(string login);
         Task Update(User user);
         Task Create(User user);
     }

@@ -20,7 +20,12 @@ namespace Messenger.Data.Repositories
 
         public async Task<User> Get(int id)
         {
-            return await _db.Users.Include(u => u.Groups).SingleOrDefaultAsync();
+            return await _db.Users.Where(u => u.Id == id).Include(u => u.Groups).SingleOrDefaultAsync();
+        }
+
+        public async Task<User> Get(string login)
+        {
+            return await _db.Users.Where(u => u.Login == login).Include(u => u.Groups).SingleOrDefaultAsync();
         }
 
         public async Task Update(User user)

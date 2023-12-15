@@ -12,20 +12,20 @@ using System.Threading.Tasks;
 
 namespace Messenger.Services
 {
-    public class UserService : IUserService
+    public class AccountService : IAccountService
     {
         private readonly IUserRepository _userRepository;
         private readonly TokenParameters _tokenParameters;
 
-        public UserService(IUserRepository userRepository)
+        public AccountService(IUserRepository userRepository)
         {
             _userRepository = userRepository;
             _tokenParameters = new TokenParameters();
         }
 
-        public async Task<UserDto> Login(int userId)
+        public async Task<UserDto> Login(string login, string password)
         {
-            var user = await _userRepository.Get(userId);
+            var user = await _userRepository.Get(login);
 
             if (user == null) return null; 
             return new UserDto { User = user, Token = user.GenerateJwtToken(_tokenParameters) };
