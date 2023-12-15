@@ -1,4 +1,5 @@
 ﻿using Messenger.Client.WPF.Commands;
+using Messenger.Client.WPF.Views;
 using Messenger.Dto;
 using Messenger.Services;
 using Messenger.Services.Interfaces;
@@ -62,7 +63,10 @@ namespace Messenger.Client.WPF.ViewModels
         {
             try
             {
-                using (var client = new HttpClient())
+                HttpClientHandler clientHandler = new HttpClientHandler();
+                clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+
+                using (var client = new HttpClient(clientHandler))
                 {
                     var requst = new LoginRequest() { Login = Login, Password = Password};
                     var content = new StringContent(JsonConvert.SerializeObject(requst), Encoding.UTF8, "application/json");
@@ -71,8 +75,8 @@ namespace Messenger.Client.WPF.ViewModels
                 }
 
                 currentWindow.Hide();
-                //var mainWindow = new MainWindow();
-                //mainWindow.Show();
+                var mainWindow = new MainWindow();
+                mainWindow.Show();
             }
             catch (Exception ex)
             {

@@ -4,6 +4,8 @@ using Messenger.Data.Repositories;
 using Messenger.Domain;
 using Messenger.Services;
 using Messenger.Services.Interfaces;
+using Messenger.SignalR;
+using Microsoft.AspNet.SignalR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +24,7 @@ builder.Services.AddDbContext<MessengerContext>(options =>
 //builder.Services.AddIdentity<User, IdentityRole>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSignalR();
+builder.Services.AddSignalRCore();
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -56,6 +59,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
 app.UseStaticFiles();
 app.UseRouting();
 app.UseHttpsRedirection();
@@ -65,5 +69,7 @@ app.UseSwaggerUI(options =>
     options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
     options.RoutePrefix = string.Empty;
 });
+
+app.MapHub<ChatHub>("/chat");
 
 app.Run();

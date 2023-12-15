@@ -17,7 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Messenger.Authentication", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Messenger.Dto", "Messenger.Dto\Messenger.Dto.csproj", "{646A60CF-BDD2-48F3-8050-B0EBFFB44B38}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messenger.Controllers", "Messenger.Controllers\Messenger.Controllers.csproj", "{31D86562-6017-4DF7-9986-6A4586281297}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Messenger.Controllers", "Messenger.Controllers\Messenger.Controllers.csproj", "{31D86562-6017-4DF7-9986-6A4586281297}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messenger.SignalR", "Messenger.SignalR\Messenger.SignalR.csproj", "{0B4F8087-E11B-4D69-8CAA-FF0E379F2738}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{31D86562-6017-4DF7-9986-6A4586281297}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31D86562-6017-4DF7-9986-6A4586281297}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31D86562-6017-4DF7-9986-6A4586281297}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B4F8087-E11B-4D69-8CAA-FF0E379F2738}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B4F8087-E11B-4D69-8CAA-FF0E379F2738}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B4F8087-E11B-4D69-8CAA-FF0E379F2738}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B4F8087-E11B-4D69-8CAA-FF0E379F2738}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

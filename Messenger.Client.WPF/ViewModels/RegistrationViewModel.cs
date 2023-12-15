@@ -120,7 +120,10 @@ namespace Messenger.Client.WPF.ViewModels
         {
             try
             {
-                using (var client = new HttpClient())
+                HttpClientHandler clientHandler = new HttpClientHandler();
+                clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+
+                using (var client = new HttpClient(clientHandler))
                 {
                     var content = new StringContent(JsonConvert.SerializeObject(User), Encoding.UTF8, "application/json");
                     var response = await client.PostAsync("https://localhost:7076/Account/Registration", content);
