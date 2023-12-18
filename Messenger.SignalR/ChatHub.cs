@@ -4,9 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Messenger.Data;
-using Microsoft.AspNet.SignalR;
 using Microsoft.AspNetCore.SignalR;
-using Hub = Microsoft.AspNetCore.SignalR.Hub;
 
 namespace Messenger.SignalR
 {
@@ -17,7 +15,7 @@ namespace Messenger.SignalR
 
         public async Task PrivateSend(string message, string name)
         {
-            await Clients.All.SendAsync("Recive", message, name);
+            await Clients.All.SendAsync("Receive", message, name);
         }
     }
 }

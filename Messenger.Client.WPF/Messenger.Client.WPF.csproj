@@ -8,10 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNet.SignalR.Client" Version="2.4.3" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.14" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client.Core" Version="7.0.14" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Common" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
@@ -23,6 +20,10 @@
   <ItemGroup>
     <ProjectReference Include="..\Messenger.Data\Messenger.Data.csproj" />
     <ProjectReference Include="..\Messenger.Services\Messenger.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\ate-D\" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,5 @@
 ﻿using Messenger.Services;
-using Microsoft.AspNet.SignalR.Client;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Collections.Generic;
@@ -23,7 +23,7 @@ namespace Messenger.Client.WPF.Views
     /// </summary>
     public partial class ChatPage : UserControl
     {
-        Microsoft.AspNetCore.SignalR.Client.HubConnection _connection;
+        HubConnection _connection;
 
         public ChatPage()
         {
@@ -31,7 +31,7 @@ namespace Messenger.Client.WPF.Views
 
             _connection = new HubConnectionBuilder().WithUrl("https://localhost:7076/chat").WithAutomaticReconnect().Build();
 
-            _connection.On<string, string>("Recive", (message, name) =>
+            _connection.On<string, string>("Receive", (message, name) =>
             {
                 Dispatcher.Invoke(() =>
                 {
@@ -44,7 +44,14 @@ namespace Messenger.Client.WPF.Views
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            await _connection.InvokeAsync("PrivateSend", testTextBox.Text, "test");
+            try
+            {
+                await _connection.InvokeAsync("PrivateSend", testTextBox.Text, "test");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)

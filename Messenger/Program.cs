@@ -5,9 +5,9 @@ using Messenger.Domain;
 using Messenger.Services;
 using Messenger.Services.Interfaces;
 using Messenger.SignalR;
-using Microsoft.AspNet.SignalR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 

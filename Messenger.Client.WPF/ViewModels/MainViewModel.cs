@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNet.SignalR.Client;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,12 +20,9 @@ namespace Messenger.Client.WPF.ViewModels
             }
         }
 
-        private readonly HubConnection _connection;
         public MainViewModel()
         {
             _currentViewModel = new ChatViewModel();
-
-            //var _connection = new HubConnection("https://localhost:7076/chat");
         }
     }
 }
