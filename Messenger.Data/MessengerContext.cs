@@ -34,18 +34,18 @@ namespace Messenger.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserMessage>()
-                .HasOne(um => um.Addresser)
-                .WithMany(u => u.UserMessagesAsAddresser)
+                .HasOne(um => um.Sender)
+                .WithMany(u => u.UserMessagesAsSender)
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<UserMessage>()
-                .HasOne(um => um.Addressee)
-                .WithMany(u => u.UserMessagesAsAddressee)
+                .HasOne(um => um.Reciver)
+                .WithMany(u => u.UserMessagesAsReciver)
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<GroupMessage>()
-                .HasOne(gm => gm.Addresser)
-                .WithMany(g => g.GroupMessagesAsAddresser)
+                .HasOne(gm => gm.Sender)
+                .WithMany(g => g.GroupMessagesAsReciver)
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<GroupMessage>()

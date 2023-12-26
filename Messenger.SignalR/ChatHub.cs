@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Messenger.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Messenger.SignalR
@@ -13,9 +14,12 @@ namespace Messenger.SignalR
         //public readonly static List<UserViewModel> _Connections = new List<UserViewModel>();
         private readonly static Dictionary<string, string> _ConnectionsMap = new Dictionary<string, string>();
 
-        public async Task PrivateSend(string message, string name)
+        [Authorize]
+        public async Task PrivateSend(string message, string reciver)
         {
-            await Clients.All.SendAsync("Receive", message, name);
+            var name = Context.User.Identity.Name;
+            await Clients.User(reciver).SendAsync("Receive", message, name );
+            await Clients.Caller.SendAsync("Receive", message, name);
         }
     }
 }

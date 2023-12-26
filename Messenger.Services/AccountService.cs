@@ -17,8 +17,6 @@ namespace Messenger.Services
         private readonly IUserRepository _userRepository;
         private readonly TokenParameters _tokenParameters;
 
-        public static UserDto CurrentUser; 
-
         public AccountService(IUserRepository userRepository)
         {
             _userRepository = userRepository;
@@ -29,8 +27,9 @@ namespace Messenger.Services
         {
             var user = await _userRepository.Get(login);
 
-            if (user == null) return null; 
-            return new UserDto { User = user, Token = user.GenerateJwtToken(_tokenParameters) };
+            if (user == null) return null;
+            var token = user.GenerateJwtToken(_tokenParameters);
+            return new UserDto { User = user, Token = token };
         }
 
         public async Task Registration(User user) => await _userRepository.Create(user);

@@ -1,3 +1,4 @@
+using Messenger.Authentication;
 using Messenger.Data;
 using Messenger.Data.Interfaces;
 using Messenger.Data.Repositories;
@@ -6,10 +7,14 @@ using Messenger.Services;
 using Messenger.Services.Interfaces;
 using Messenger.SignalR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +25,42 @@ builder.Services.AddDbContext<MessengerContext>(options =>
 {
     options.UseSqlServer(connectionString);
 }, ServiceLifetime.Transient);
+
+builder.Services.AddSingleton<IUserIdProvider, UserProvider>();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = JwtTokenValidator.ValidateParameters;
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                var accessToken = context.Request.Query["token"];
+
+                // если запрос направлен хабу
+                var path = context.HttpContext.Request.Path;
+                if (!string.IsNullOrEmpty(accessToken) && (path.StartsWithSegments("/chat")))
+                {
+                    // получаем токен из строки запроса
+                    context.Token = accessToken;
+                }
+                return Task.CompletedTask;
+            }
+        };
+    });
+builder.Services.AddAuthorization();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy",
+        builder => builder
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials()
+            .SetIsOriginAllowed((host) => true) //allow all connections (including Signalr)
+        );
+});
 
 //builder.Services.AddIdentity<User, IdentityRole>();
 builder.Services.AddHttpContextAccessor();

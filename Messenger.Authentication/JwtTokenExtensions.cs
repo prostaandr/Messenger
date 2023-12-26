@@ -10,17 +10,15 @@ namespace Messenger.Authentication
     {
         public static string GenerateJwtToken(this User user, TokenParameters tokenParameters)
         {
-            var claims = new List<Claim>
+            var claimsIdentity = new ClaimsIdentity(new List<Claim>
             {
-                new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
-                new(ClaimsIdentity.DefaultNameClaimType, user.Nickname),
-                new(ClaimTypes.NameIdentifier, user.Id.ToString())
-            };
+                new(ClaimTypes.Name, user.Id.ToString())
+            }, "auth");
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenParameters.SecretKey));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var token = new JwtSecurityToken(tokenParameters.Issuer, tokenParameters.Audience, claims, null, signingCredentials: creds);
+            var token = new JwtSecurityToken(tokenParameters.Issuer, tokenParameters.Audience, claimsIdentity.Claims, null, signingCredentials: creds);
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }

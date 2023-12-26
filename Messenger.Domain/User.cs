@@ -14,11 +14,11 @@ namespace Messenger.Domain
         public string Nickname { get; set; }
         public string Icon { get; set; }
         public string Email { get; set; }
+        public DateTime LastOnlineDate { get; set; }
 
-        public List<Message> Messages { get; set; } = new List<Message>();
-        public List<UserMessage> UserMessagesAsAddresser { get; set; } = new List<UserMessage>();
-        public List<UserMessage> UserMessagesAsAddressee { get; set; } = new List<UserMessage>();
+        public List<UserMessage> UserMessagesAsSender { get; set; } = new List<UserMessage>();
+        public List<UserMessage> UserMessagesAsReciver { get; set; } = new List<UserMessage>();
         public List<Group> Groups { get; set; } = new List<Group>();
-        public List<GroupMessage> GroupMessagesAsAddresser { get; set; } = new List<GroupMessage>();
+        public List<GroupMessage> GroupMessagesAsReciver { get; set; } = new List<GroupMessage>();
     }
 }

@@ -12,7 +12,5 @@ namespace Messenger.Domain
         public string Value { get; set; }
         public virtual MessageType Type { get; set; }
         public DateTime Date { get; set; }
-        public int UserId { get; set; }
-        public User User { get; set; }
     }
 }

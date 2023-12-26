@@ -8,6 +8,8 @@ namespace Messenger.Client.WPF.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
+        public static string Token = "";
+
         private BaseViewModel _currentViewModel;
         public BaseViewModel CurrentViewModel
         {

@@ -68,9 +68,13 @@ namespace Messenger.Client.WPF.ViewModels
 
                 using (var client = new HttpClient(clientHandler))
                 {
-                    var requst = new LoginRequest() { Login = Login, Password = Password};
-                    var content = new StringContent(JsonConvert.SerializeObject(requst), Encoding.UTF8, "application/json");
+                    var request = new LoginRequest() { Login = Login, Password = Password};
+                    var content = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
                     var response = await client.PostAsync("https://localhost:7076/Account/Login", content);
+
+                    var token = await response.Content.ReadAsStringAsync();
+                    MainViewModel.Token = token;
+                    MessageBox.Show(token);
                     response.EnsureSuccessStatusCode();
                 }
 

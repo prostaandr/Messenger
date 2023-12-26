@@ -11,9 +11,9 @@ namespace Messenger.Domain
         public int Id { get; set; }
         public int MessageId { get; set; }
         public Message Message { get; set; }
-        public int AddresserId { get; set; }
-        public User Addresser { get; set; }
-        public int AddresseeId { get; set; }
-        public User Addressee { get; set; }
+        public int SenderId { get; set; }
+        public User Sender { get; set; }
+        public int ReciverId { get; set; }
+        public User Reciver { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Messenger.Services;
+﻿using Messenger.Client.WPF.ViewModels;
+using Messenger.Services;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SignalR.Client;
 using System;
@@ -29,14 +30,19 @@ namespace Messenger.Client.WPF.Views
         {
             InitializeComponent();
 
-            _connection = new HubConnectionBuilder().WithUrl("https://localhost:7076/chat").WithAutomaticReconnect().Build();
+            var token = MainViewModel.Token;
+            _connection = new HubConnectionBuilder().WithUrl("https://localhost:7076/chat", option =>
+            {
+                option.UseDefaultCredentials = true;
+                option.AccessTokenProvider = () => Task.FromResult(token);
+            }).WithAutomaticReconnect().Build();
 
             _connection.On<string, string>("Receive", (message, name) =>
             {
                 Dispatcher.Invoke(() =>
                 {
                     var newMessage = $"{name}: {message}";
-                    testTextBloc.Text = newMessage;
+                    testTextBlock.Text = newMessage ;
                 });
             });
 
@@ -46,7 +52,7 @@ namespace Messenger.Client.WPF.Views
         {
             try
             {
-                await _connection.InvokeAsync("PrivateSend", testTextBox.Text, "test");
+                await _connection.InvokeAsync("PrivateSend", testTextBox.Text, "2");
             }
             catch (Exception ex)
             {

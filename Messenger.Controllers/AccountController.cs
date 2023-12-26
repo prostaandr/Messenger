@@ -25,7 +25,7 @@ namespace Messenger.Controllers
 
         // POST: Account/Login
         [HttpPost("Login")]
-        public async Task<IActionResult> Login (LoginRequest request)
+        public async Task<IActionResult> Login(LoginRequest request)
         {
             var user = await _accountService.Login(request.Login, request.Password);
             if (user == null)
@@ -33,8 +33,14 @@ namespace Messenger.Controllers
                 return BadRequest();
             }
 
-            AccountService.CurrentUser = user;
-            return Ok(user.Token);
+            var token = user.Token;
+
+            var response = new
+            {
+                token = user.Token
+            };
+
+            return Ok(token);
         }
 
         // POST: Account/Registration
