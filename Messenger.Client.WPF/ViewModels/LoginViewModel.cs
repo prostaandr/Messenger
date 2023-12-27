@@ -43,8 +43,6 @@ namespace Messenger.Client.WPF.ViewModels
             }
         }
 
-        public LoginViewModel() { }
-
         private RelayCommand _loginCommand;
         public RelayCommand LoginCommand
         {
@@ -57,6 +55,12 @@ namespace Messenger.Client.WPF.ViewModels
                       LoginAsync(currentWindow);
                   }));
             }
+        }
+
+
+        public LoginViewModel()
+        {
+            
         }
 
         private async void LoginAsync(Window currentWindow)
@@ -74,7 +78,6 @@ namespace Messenger.Client.WPF.ViewModels
 
                     var token = await response.Content.ReadAsStringAsync();
                     MainViewModel.Token = token;
-                    MessageBox.Show(token);
                     response.EnsureSuccessStatusCode();
                 }
 

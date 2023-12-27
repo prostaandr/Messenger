@@ -14,7 +14,7 @@ namespace Messenger.SignalR
         //public readonly static List<UserViewModel> _Connections = new List<UserViewModel>();
         private readonly static Dictionary<string, string> _ConnectionsMap = new Dictionary<string, string>();
 
-        [Authorize]
+        
         public async Task PrivateSend(string message, string reciver)
         {
             var name = Context.User.Identity.Name;

@@ -3,6 +3,7 @@ using Messenger.Client.WPF.Helpers;
 using Messenger.Client.WPF.Views;
 using Messenger.Domain;
 using Messenger.Dto;
+using Messenger.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System;

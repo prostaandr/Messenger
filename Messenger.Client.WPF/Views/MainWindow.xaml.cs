@@ -1,4 +1,6 @@
 ﻿using Messenger.Client.WPF.ViewModels;
+using Messenger.Services;
+using Messenger.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;

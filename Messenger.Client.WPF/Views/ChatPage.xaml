@@ -49,11 +49,11 @@
                     <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
                 <Image Grid.Column="0" Grid.Row="0" Source="{Binding CurrentInterlocutor.Icon}" Grid.RowSpan="1" Height="32" Width="32"></Image>
-                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding CurrentInterlocutor.NickName}"></TextBlock>
+                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding CurrentInterlocutor.Nickname}"></TextBlock>
                 <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding CurrentInterlocutor.LastOnlineDate}" Foreground="{StaticResource titleFontColor}"></TextBlock>
             </Grid>
             <StackPanel Grid.Row="1">
-                <TextBlock x:Name="testTextBlock" Text="{Binding SendingText}">fsfdsdsf</TextBlock>
+                <TextBlock x:Name="testTextBlock" Text="{Binding SendedText}"></TextBlock>
                 <TextBox x:Name="testTextBox" Text="{Binding SendingText}"></TextBox>
                 <Button Height="30" Command="{Binding SendCommand}"></Button>
             </StackPanel>

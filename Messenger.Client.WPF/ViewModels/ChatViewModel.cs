@@ -1,13 +1,16 @@
 ﻿using Messenger.Client.WPF.Commands;
+using Messenger.Client.WPF.Views;
+using Messenger.Data.Repositories;
 using Messenger.Domain;
-using Messenger.Server;
 using Messenger.Services;
 using Messenger.Services.Interfaces;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,6 +50,18 @@ namespace Messenger.Client.WPF.ViewModels
             }
         }
 
+        private string _sendedText;
+        public string SendedText
+        {
+            get => _sendedText;
+            set
+            {
+                if (value == _sendedText) return;
+                _sendedText = value;
+                OnPropertyChanged();
+            }
+        }
+
         private RelayCommand _sendCommand;
         public RelayCommand SendCommand
         {
@@ -55,22 +70,29 @@ namespace Messenger.Client.WPF.ViewModels
                 return _sendCommand ??
                   (_sendCommand = new RelayCommand(obj =>
                   {
-                      try
-                      {
-                          _connection.InvokeAsync("PrivateSend", SendingText, CurrentInterlocutor.Id).Wait();
-                      }
-                      catch (Exception ex)
-                      {
-                          MessageBox.Show(ex.Message);
-                      }
+                      SendAsync();
                   }));
+            }
+        }
+
+        private async void SendAsync()
+        {
+            try
+            {
+                await _connection.InvokeAsync("PrivateSend", SendingText, CurrentInterlocutor.Id.ToString());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
 
         public ChatViewModel()
         {
-            var serviceProvider = CurrentServiceProvider.GetProvider();
-            _userService = serviceProvider.GetService<IUserService>();
+            SendingText = "gg2";
+            SendedText = "gg1";
+
+            _userService = App.serviceProvider.GetService<IUserService>();
 
             var token = MainViewModel.Token;
             _connection = new HubConnectionBuilder().WithUrl("https://localhost:7076/chat", option =>
@@ -79,21 +101,27 @@ namespace Messenger.Client.WPF.ViewModels
                 option.AccessTokenProvider = () => Task.FromResult(token);
             }).WithAutomaticReconnect().Build();
 
-            Connection();
 
-            _connection.On<string, string>("Receive", (message, name) =>
+            _connection.On<string, string>("SendPrivateReceive", (message, name) =>
             {
-                Dispatcher.CurrentDispatcher.Invoke(() =>
+                Application.Current.Dispatcher.Invoke(() =>
                 {
                     var newMessage = $"{name}: {message}";
-                    SendingText = newMessage;
+                    SendedText = newMessage;
                 });
             });
 
-            CurrentInterlocutor = _userService.GetUser(3).Result;
+            Connection();
+
+            InitilizationAsync();
         }
 
-        private async Task Connection()
+        private async void InitilizationAsync()
+        {
+            CurrentInterlocutor = await _userService.GetUser(3);
+        }
+
+        private async void Connection()
         {
             try
             {
