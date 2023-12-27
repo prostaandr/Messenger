@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Http;
 using System.ServiceProcess;
@@ -26,14 +27,14 @@ namespace Messenger.Client.WPF.ViewModels
 
         private readonly HubConnection _connection;
 
-        private User _currentInterlocutor;
-        public User CurrentInterlocutor
+        private InterlocutorsViewModel _interlocutorsViewModel;
+        public InterlocutorsViewModel InterlocutorsViewModel
         {
-            get => _currentInterlocutor;
+            get => _interlocutorsViewModel;
             set
             {
-                if (value == _currentInterlocutor) return;
-                _currentInterlocutor = value;
+                if (value == _interlocutorsViewModel) return;
+                _interlocutorsViewModel = value;
                 OnPropertyChanged();
             }
         }
@@ -46,18 +47,6 @@ namespace Messenger.Client.WPF.ViewModels
             {
                 if (value == _sendingText) return;
                 _sendingText = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private string _sendedText;
-        public string SendedText
-        {
-            get => _sendedText;
-            set
-            {
-                if (value == _sendedText) return;
-                _sendedText = value;
                 OnPropertyChanged();
             }
         }
@@ -79,7 +68,7 @@ namespace Messenger.Client.WPF.ViewModels
         {
             try
             {
-                await _connection.InvokeAsync("PrivateSend", SendingText, CurrentInterlocutor.Id.ToString());
+                await _connection.InvokeAsync("PrivateSend", SendingText, InterlocutorsViewModel.CurrentInterlocutor.Interlocutor.Id.ToString());
             }
             catch (Exception ex)
             {
@@ -87,11 +76,10 @@ namespace Messenger.Client.WPF.ViewModels
             }
         }
 
+
         public ChatViewModel()
         {
-            SendingText = "gg2";
-            SendedText = "gg1";
-
+            SendingText = "";
             _userService = App.serviceProvider.GetService<IUserService>();
 
             var token = MainViewModel.Token;
@@ -100,25 +88,57 @@ namespace Messenger.Client.WPF.ViewModels
                 option.UseDefaultCredentials = true;
                 option.AccessTokenProvider = () => Task.FromResult(token);
             }).WithAutomaticReconnect().Build();
-
-
-            _connection.On<string, string>("SendPrivateReceive", (message, name) =>
+            
+            _connection.On<string, bool>("SendPrivateReceive", (messageValue, isSender) =>
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    var newMessage = $"{name}: {message}";
-                    SendedText = newMessage;
+                    var newMessage = Task.FromResult(_userService.GetLastUserMessage(MainViewModel.CurrentUser.Id, InterlocutorsViewModel.CurrentInterlocutor.Interlocutor.Id));
+
+                    var message = new Message
+                    {
+                        Value = messageValue,
+                        Type = MessageType.Text,
+                        Date = DateTime.Now
+                    };
+
+                    var newUserMessage = new UserMessage
+                    {
+                        SenderId = MainViewModel.CurrentUser.Id,
+                        ReciverId = InterlocutorsViewModel.CurrentInterlocutor.Interlocutor.Id,
+                        Message = message
+                    };
+
+                    Task.FromResult(_userService.SendUserMessage(newUserMessage));
+
+                    var inter = InterlocutorsViewModel.Interlocutors.Where(i => i.CurrentUserId == newUserMessage.SenderId && i.Interlocutor.Id == newUserMessage.ReciverId).FirstOrDefault();
+                    inter.Messages.Add(new MessageViemModel(newUserMessage.SenderId, newUserMessage, isSender));
+
+                    SendingText = "";
+                });
+            });
+
+            _connection.On<int>("OnConnectedRecive", (id) =>
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    var inter = InterlocutorsViewModel.Interlocutors.Where(i => i.Interlocutor.Id == id).FirstOrDefault();
+                    inter.Interlocutor.Status = UserStatus.Online;
+                });
+            });
+
+            _connection.On<int>("OnDisconnectedAsync", (id) =>
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    var inter = InterlocutorsViewModel.Interlocutors.Where(i => i.Interlocutor.Id == id).FirstOrDefault();
+                    inter.Interlocutor.Status = UserStatus.Offline;
                 });
             });
 
             Connection();
 
-            InitilizationAsync();
-        }
-
-        private async void InitilizationAsync()
-        {
-            CurrentInterlocutor = await _userService.GetUser(3);
+            InterlocutorsViewModel = new InterlocutorsViewModel(MainViewModel.CurrentUser.Id);
         }
 
         private async void Connection()

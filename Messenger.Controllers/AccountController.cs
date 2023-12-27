@@ -34,13 +34,9 @@ namespace Messenger.Controllers
             }
 
             var token = user.Token;
+            user.Token = token;
 
-            var response = new
-            {
-                token = user.Token
-            };
-
-            return Ok(token);
+            return Ok(user);
         }
 
         // POST: Account/Registration

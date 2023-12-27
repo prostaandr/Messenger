@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Messenger.Client.WPF.Views"
         mc:Ignorable="d"
-        Title="Общение" Height="350" Width="500"
+        Title="Общение" Height="720" Width="1280"
         Background="{StaticResource backgroundColor}"
         Foreground="{StaticResource mainFontColor}"
         WindowStartupLocation="CenterScreen"

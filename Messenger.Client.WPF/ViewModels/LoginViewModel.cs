@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -76,8 +77,9 @@ namespace Messenger.Client.WPF.ViewModels
                     var content = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
                     var response = await client.PostAsync("https://localhost:7076/Account/Login", content);
 
-                    var token = await response.Content.ReadAsStringAsync();
-                    MainViewModel.Token = token;
+                    var data = await response.Content.ReadFromJsonAsync<UserDto>();
+                    MainViewModel.Token = data.Token;
+                    MainViewModel.CurrentUser = data.User;
                     response.EnsureSuccessStatusCode();
                 }
 

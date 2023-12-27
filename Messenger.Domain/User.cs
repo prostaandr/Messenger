@@ -15,6 +15,7 @@ namespace Messenger.Domain
         public string Icon { get; set; }
         public string Email { get; set; }
         public DateTime LastOnlineDate { get; set; }
+        public UserStatus Status { get; set; }
 
         public List<UserMessage> UserMessagesAsSender { get; set; } = new List<UserMessage>();
         public List<UserMessage> UserMessagesAsReciver { get; set; } = new List<UserMessage>();

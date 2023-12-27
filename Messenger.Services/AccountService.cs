@@ -25,7 +25,7 @@ namespace Messenger.Services
 
         public async Task<UserDto> Login(string login, string password)
         {
-            var user = await _userRepository.Get(login);
+            var user = await _userRepository.Get(login, password);
 
             if (user == null) return null;
             var token = user.GenerateJwtToken(_tokenParameters);

@@ -1,62 +1,113 @@
-﻿<UserControl x:Class="Messenger.Client.WPF.Views.ChatPage"
+﻿<UserControl x:Class="Messenger.Client.WPF.Views.ChatPage" Name="gg"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Messenger.Client.WPF.Views"
+      xmlns:helpers="clr-namespace:Messenger.Client.WPF.Helpers"
       mc:Ignorable="d" 
       d:DesignHeight="720" d:DesignWidth="1280"
       Background="{StaticResource backgroundColor}"
       Foreground="{StaticResource mainFontColor}">
+    <UserControl.Resources>
+        <DataTemplate x:Key="SenderTextTemplate">
+            <StackPanel HorizontalAlignment="Right">
+                <TextBlock Text="{Binding Message.Message.Date}"></TextBlock>
+                <StackPanel Width="300" MinHeight="30" HorizontalAlignment="Right" Background="LightSkyBlue" Margin="0 10">
+                    <TextBlock Text="{Binding Message.Message.Value}" Padding="5"></TextBlock>
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="ReciverTextTemplate">
+            <StackPanel>
+                <TextBlock Text="{Binding Message.Message.Date}"></TextBlock>
+                <StackPanel Width="300" MinHeight="30" HorizontalAlignment="Left" Background="Green" Margin="0 10">
+                <TextBlock Text="{Binding Message.Message.Value}" Padding="5"></TextBlock>
+            </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+
+        <helpers:ChatDataTemplateSelector x:Key="ChatDataTemplateSelector"
+                                         SenderText="{StaticResource SenderTextTemplate}"
+                                         ReciverText="{StaticResource ReciverTextTemplate}">
+        </helpers:ChatDataTemplateSelector>
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="3*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <ItemsControl Grid.Column="0" ItemsSource="{Binding Interlocutors}" Background="{StaticResource backgroundColor}" Foreground="{StaticResource mainFontColor}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="10*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <ItemsControl Grid.Column="0" Grid.Row="1" DataContext="{Binding InterlocutorsViewModel}" ItemsSource="{Binding Interlocutors}" Background="{StaticResource backgroundColor}" Foreground="{StaticResource mainFontColor}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Grid>
+                    <Button Background="Transparent" Command="{Binding ElementName=gg, Path=DataContext.InterlocutorsViewModel.SetCurrentInterlocutorCommand}" CommandParameter="{Binding Interlocutor.Id}">
+                        <Border HorizontalAlignment="Left" BorderBrush="White" BorderThickness="1" Padding="5" Width="300">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition></ColumnDefinition>
+                                    <ColumnDefinition></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="1" BorderBrush="White" BorderThickness="1" Width="32" Margin="15 0">
+                                    <Image Source="{Binding Interlocutor.Icon}" Stretch="Uniform" Height="32" Width="32"></Image>
+                                </Border>
+                                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Interlocutor.Nickname}" Foreground="White" Margin="15 0"></TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Interlocutor.LastMessage}"></TextBlock>
+                            </Grid>
+                        </Border>
+                    </Button>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <Border Grid.Column="1" Grid.Row="1" BorderBrush="White" BorderThickness="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Border Grid.Row="0" BorderThickness="1" BorderBrush="White" Padding="5">
+                    <Grid >
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition Width="100"></ColumnDefinition>
                             <ColumnDefinition></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition></RowDefinition>
                             <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
-                        <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="1" BorderBrush="White" BorderThickness="1">
-                            <Image Source="{Binding Icon}" Stretch="Uniform" Height="32" Width="32"></Image>
-                        </Border>
-                        <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding NickName}"></TextBlock>
-                        <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding LastMessage}"></TextBlock>
+                        <Image Grid.Column="0" Grid.Row="0" Source="{Binding InterlocutorsViewModel.CurrentInterlocutor.Interlocutor.Icon}" Grid.RowSpan="1" Height="32" Width="32" Stretch="Uniform"></Image>
+                        <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding InterlocutorsViewModel.CurrentInterlocutor.Interlocutor.Nickname}"></TextBlock>
+                        <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding InterlocutorsViewModel.CurrentInterlocutor.Interlocutor.Status}" Foreground="{StaticResource titleFontColor}"></TextBlock>
                     </Grid>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-        <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="60"></RowDefinition>
-                <RowDefinition></RowDefinition>
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                </Grid.RowDefinitions>
-                <Image Grid.Column="0" Grid.Row="0" Source="{Binding CurrentInterlocutor.Icon}" Grid.RowSpan="1" Height="32" Width="32"></Image>
-                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding CurrentInterlocutor.Nickname}"></TextBlock>
-                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding CurrentInterlocutor.LastOnlineDate}" Foreground="{StaticResource titleFontColor}"></TextBlock>
+                </Border>
+                <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Hidden" Padding="5 10" >
+                    <Grid Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Row="1">
+                            <ItemsControl DataContext="{Binding InterlocutorsViewModel}" ItemsSource="{Binding CurrentInterlocutor.Messages}"
+                                ItemTemplateSelector="{StaticResource ChatDataTemplateSelector}">
+
+                            </ItemsControl>
+                        </StackPanel>
+                    </Grid>
+                </ScrollViewer>
             </Grid>
-            <StackPanel Grid.Row="1">
-                <TextBlock x:Name="testTextBlock" Text="{Binding SendedText}"></TextBlock>
-                <TextBox x:Name="testTextBox" Text="{Binding SendingText}"></TextBox>
-                <Button Height="30" Command="{Binding SendCommand}"></Button>
-            </StackPanel>
-        </Grid>
+        </Border>
+        <StackPanel Grid.Row="2" Grid.Column="1" Margin="10" Orientation="Horizontal">
+            <TextBox Width="500" Text="{Binding SendingText}"></TextBox>
+            <Button Command="{Binding SendCommand}">Отправить</Button>
+        </StackPanel>
     </Grid>
 </UserControl>

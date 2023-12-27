@@ -1,4 +1,5 @@
-﻿using Messenger.Services.Interfaces;
+﻿using Messenger.Domain;
+using Messenger.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace Messenger.Client.WPF.ViewModels
     public class MainViewModel : BaseViewModel
     {
         public static string Token = "";
+        public static User CurrentUser = new User();
 
         private BaseViewModel _currentViewModel;
         public BaseViewModel CurrentViewModel
