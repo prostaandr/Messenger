@@ -3,6 +3,7 @@ using Messenger.Data;
 using Messenger.Data.Interfaces;
 using Messenger.Data.Repositories;
 using Messenger.Domain;
+using Messenger.Server;
 using Messenger.Services;
 using Messenger.Services.Interfaces;
 using Messenger.SignalR;
@@ -31,7 +32,6 @@ builder.Services.AddSingleton<IUserIdProvider, UserProvider>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        options.TokenValidationParameters = JwtTokenValidator.ValidateParameters;
         options.Events = new JwtBearerEvents
         {
             OnMessageReceived = context =>
@@ -93,6 +93,9 @@ builder.Services.AddScoped<IGroupRepository, GroupRepository>();
 builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IUserService, UserService>();
+
+CurrentServiceProvider.SetProvider(builder.Services);
 
 var app = builder.Build();
 

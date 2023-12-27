@@ -7,8 +7,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="720" d:DesignWidth="1280"
       Background="{StaticResource backgroundColor}"
-      Foreground="{StaticResource mainFontColor}"
-             Loaded="UserControl_Loaded">
+      Foreground="{StaticResource mainFontColor}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
@@ -54,9 +53,9 @@
                 <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding CurrentInterlocutor.LastOnlineDate}" Foreground="{StaticResource titleFontColor}"></TextBlock>
             </Grid>
             <StackPanel Grid.Row="1">
-                <TextBlock x:Name="testTextBlock">fsfdsdsf</TextBlock>
-                <TextBox x:Name="testTextBox"></TextBox>
-                <Button Height="30" Click="Button_Click"></Button>
+                <TextBlock x:Name="testTextBlock" Text="{Binding SendingText}">fsfdsdsf</TextBlock>
+                <TextBox x:Name="testTextBox" Text="{Binding SendingText}"></TextBox>
+                <Button Height="30" Command="{Binding SendCommand}"></Button>
             </StackPanel>
         </Grid>
     </Grid>

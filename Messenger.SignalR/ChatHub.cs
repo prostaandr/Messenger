@@ -18,8 +18,8 @@ namespace Messenger.SignalR
         public async Task PrivateSend(string message, string reciver)
         {
             var name = Context.User.Identity.Name;
-            await Clients.User(reciver).SendAsync("Receive", message, name );
-            await Clients.Caller.SendAsync("Receive", message, name);
+            await Clients.User(reciver).SendAsync("SendPrivateReceive", message, name );
+            await Clients.Caller.SendAsync("SendPrivateReceive", message, name);
         }
     }
 }

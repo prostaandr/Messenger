@@ -20,7 +20,7 @@ namespace Messenger.Client.WPF
     {
         public App()
         {
-
+            
         }
     }
 }

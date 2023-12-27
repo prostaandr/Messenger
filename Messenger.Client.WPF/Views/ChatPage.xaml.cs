@@ -24,52 +24,9 @@ namespace Messenger.Client.WPF.Views
     /// </summary>
     public partial class ChatPage : UserControl
     {
-        HubConnection _connection;
-
         public ChatPage()
         {
             InitializeComponent();
-
-            var token = MainViewModel.Token;
-            _connection = new HubConnectionBuilder().WithUrl("https://localhost:7076/chat", option =>
-            {
-                option.UseDefaultCredentials = true;
-                option.AccessTokenProvider = () => Task.FromResult(token);
-            }).WithAutomaticReconnect().Build();
-
-            _connection.On<string, string>("Receive", (message, name) =>
-            {
-                Dispatcher.Invoke(() =>
-                {
-                    var newMessage = $"{name}: {message}";
-                    testTextBlock.Text = newMessage ;
-                });
-            });
-
-        }
-
-        private async void Button_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                await _connection.InvokeAsync("PrivateSend", testTextBox.Text, "2");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-
-        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                await _connection.StartAsync();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
         }
     }
 }
